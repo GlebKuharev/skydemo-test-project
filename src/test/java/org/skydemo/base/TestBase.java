@@ -10,7 +10,6 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -26,14 +25,15 @@ public class TestBase {
     @BeforeSuite
     public void beforeSuite(ITestContext testContext) {
         testSuiteStartTime = testContext.getStartDate().toString().replace(":", "-");
-        LogbackConfigurator.setLogFilePath(Path.of("./target/", testSuiteStartTime, "logs",
-                testContext.getAllTestMethods()[0].getMethodName() + ".log"));
+        LogbackConfigurator.configureFileLog(Path.of("./target/", testSuiteStartTime, "logs",
+                testContext.getSuite().getName() + ".log"));
         log.info("Test suite start time: {}", testSuiteStartTime);
     }
 
     @BeforeMethod
     @Parameters({"browserName", "headless"})
-    public void setUp(@Optional("chrome") String browserName, @Optional("false") String headless) throws IllegalArgumentException {
+    public void setUp(@Optional("chrome") String browserName, @Optional("false") String headless, ITestResult result) {
+        log.info("\n\nStarting a new test: {}", result.getMethod().getQualifiedName());
         this.browserName = browserName;
         page = browserFactory.initializeBrowser(browserName, headless);
         startTracing();
@@ -44,7 +44,7 @@ public class TestBase {
     }
 
     @AfterMethod
-    public void tearDown(ITestResult result) throws IOException {
+    public void tearDown(ITestResult result) {
         takeScreenshotOnFailure(result);
         stopTracing(result.getName());
         page.context().close();

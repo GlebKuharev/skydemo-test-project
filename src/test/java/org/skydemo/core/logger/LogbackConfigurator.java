@@ -11,14 +11,14 @@ import java.nio.file.Path;
 
 public class LogbackConfigurator {
 
-    public static void setLogFilePath(Path logFilePath) {
+    public static void configureFileLog(Path logFilePath) {
         // Create a logger context
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
         // Create a file appender
         FileAppender fileAppender = new FileAppender();
         fileAppender.setContext(loggerContext);
-        fileAppender.setName("TESTMETHOD_PER_FILE");
+        fileAppender.setName("FILE");
 
         PatternLayoutEncoder fileEncoder = new PatternLayoutEncoder();
         fileEncoder.setContext(loggerContext);
