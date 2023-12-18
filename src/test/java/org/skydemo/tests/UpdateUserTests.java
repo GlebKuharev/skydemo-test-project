@@ -15,6 +15,14 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class UpdateUserTests extends TestBase {
 
+    /**
+     * Test case description: <br>
+     * 1. Create a user <br>
+     * 2. Check that user's First name and Last name can be edited (changes persist after saving and page refresh) <br>
+     * 3. Check that user's email cannot be edited <br>
+     * 4. Check that Undo button doesn't save the changes, including after a page refresh <br>
+     * 5. Check that user cannot be updated when trying to update First name or Last name to an empty value <br>
+     */
     @Test
     public void updateUserInfoTest() {
         User user = UserFactory.createUser();
@@ -68,6 +76,14 @@ public class UpdateUserTests extends TestBase {
         assertThat(editUserPage.userInfoComponent.getSaveUserInfoButton()).isDisabled();
     }
 
+    /**
+     * Test case description: <br>
+     * 1. 1. Create a user with default roles <br>
+     * 2. Check that new roles can be added to a user <br>
+     * 3. Check that changes persist after a page refresh <br>
+     * 4. Check that roles can be changed (removed and added) <br>
+     * 5. Check that Undo button doesn't save changes, including after a page refresh <br>
+     */
     @Test
     public void updateRolesTest() {
         List<String> rolesToSet = List.of("Insights", "Product Release", "Site Management");
@@ -76,8 +92,6 @@ public class UpdateUserTests extends TestBase {
         UsersPage usersPage = new UsersPage(page);
         AddUserPage addUserPage = usersPage.clickAddUserBtn();
         addUserPage.createUser(user);
-
-        page.onDialog(dialog -> System.out.println(dialog.message()));
 
         UserPage userPage = usersPage.openUserPage(user.getEmail());
         EditUserPage editUserPage = userPage.rolesComponent.clickEditRolesBtn();

@@ -12,6 +12,13 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class AddUserTests extends TestBase {
 
+    /**
+     * Test case description: <br>
+     * 1. Create a user <br>
+     * 2. Check the user creation alert <br>
+     * 4. Open the user profile page from users list <br>
+     * 3. Check that user has correct first name, last name, email and default roles set up <br>
+     */
     @Test
     public void addUserTest() {
         UsersPage usersPage = new UsersPage(page);
@@ -33,6 +40,12 @@ public class AddUserTests extends TestBase {
         assertThat(userPage.rolesComponent.getEnabledRoles()).hasText(new String[]{"Basic Access"});
     }
 
+    /**
+     * Test case description: <br>
+     * 1. Check that user cannot be created while providing only 0, 1 or 2 of 3 obligatory fields (first  name, last name, email)
+     * 2. Check that user cannot be created when email is provided in an invalid format <br>
+     * 3. Check that only one user can be created under a certain email <br>
+     */
     @Test
     public void addUserNegativeTest() {
         UsersPage usersPage = new UsersPage(page);

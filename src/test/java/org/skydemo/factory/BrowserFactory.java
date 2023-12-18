@@ -38,7 +38,6 @@ public class BrowserFactory {
 
         BrowserContext browserContext = browser.newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get("videos/")));
         Page page = browserContext.newPage();
-        page.setDefaultTimeout(5000);
         page.setViewportSize(1920, 1080);
 
         return page;
